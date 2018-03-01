@@ -128,7 +128,7 @@ int main(int argc, char* argv[]){
 
 
      // Solution
-     #pragma omp for schedule(dynamic)
+     #pragma omp for schedule(guided)
      for (k=0; k< size; ++k){
          X[k] = Au[index[k]][size] / Au[index[k]][k];
      }

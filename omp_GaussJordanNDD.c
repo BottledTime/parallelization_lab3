@@ -102,7 +102,7 @@ int main(int argc, char* argv[]){
             }
 
             // Gaussian elimination
-            #pragma omp for schedule(dynamic)
+            #pragma omp for
             for (i = k + 1; i < size; ++i){
                 temp = Au[index[i]][k] / Au[index[k]][k];
                 for (j = k; j < size + 1; ++j){

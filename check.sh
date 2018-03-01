@@ -1,11 +1,11 @@
 #! /bin/bash
 # Evaluate the assignment of Lab 3
-# 
+#
 # yaochen@ualberta.ca
-# Created Feb 16 2016   
+# Created Feb 16 2016
 # Modified Feb 16 2016
 # Modified Feb 28 2017 (huiquan@ualberta.ca)
-# 
+#
 # Usage:
 #	./check.sh
 # Notes:
@@ -20,7 +20,7 @@ echo "=====Evaluation for Lab 3 code.====="
 # Parameters
 Sizes=(64 256 1024)
 Cores=(1 4 16)
-Duplicates=4
+Duplicates=10
 
 # Create temporary directory for testing and copy all exacutable to there.
 mkdir tmp
@@ -56,6 +56,8 @@ if [ ! -f $mainEX ]; then
 	echo "File $mainEX does not exist! Exiting............"
 	exit
 fi
+outputFile="$mainEX.csv"
+>$outputFile
 cp $mainEX tmp/
 
 cd tmp/
@@ -69,14 +71,17 @@ echo "Evaluating the results..."
 	echo "Generating the testing data..."
     	./$mxgenEX -s $SAMPLE
         echo "SAMPLE $SAMPLE"
+        echo "SAMPLE $SAMPLE" >> ../$outputFile
         for CORE in ${Cores[@]}; do
             echo "$CORE threads"
+            echo "$CORE threads" >> ../$outputFile
             #BestTime=10000000;
             RecordTime=10000000;
             ATTEMPT=0
             while [[ $ATTEMPT -ne $Duplicates ]]; do
                 let ATTEMPT+=1
 		        echo -n "Attempt Number $ATTEMPT: "
+                        #echo -n "Attempt Number $ATTEMPT: " >> ../$outputFile
                 rm -f data_output
 		        ./$mainEX $CORE >/dev/null
                 ./$srltstEX
@@ -88,6 +93,7 @@ echo "Evaluating the results..."
 #                        RecordTime=$temp
 #                    fi
                     echo "Time of calculation: $temp"
+                    echo $temp >> ../$outputFile
                 else
                     # wrong result, record the state
                     if [[ $stat -eq "-254" ]]; then

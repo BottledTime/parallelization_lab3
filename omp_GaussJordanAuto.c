@@ -102,7 +102,7 @@ int main(int argc, char* argv[]){
             }
 
             // Gaussian elimination
-            #pragma omp for schedule(dynamic)
+            #pragma omp for schedule(auto)
             for (i = k + 1; i < size; ++i){
                 temp = Au[index[i]][k] / Au[index[k]][k];
                 for (j = k; j < size + 1; ++j){
@@ -116,7 +116,7 @@ int main(int argc, char* argv[]){
 
             // Jordan elimination
             for (k = size - 1; k > 0; --k){
-                #pragma omp for schedule(dynamic)
+                #pragma omp for schedule(auto)
                 for (i = k - 1; i >= 0; --i ){
                    temp = Au[index[i]][k] / Au[index[k]][k];
                    Au[index[i]][k] -= temp * Au[index[k]][k];
@@ -124,11 +124,11 @@ int main(int argc, char* argv[]){
                }
             }
       // GET_TIME(end);
-      // printf("Elapsed time %f\n\n", end-start);
+      // printf("Elapsed time %f\n\n", end-start);       
 
 
      // Solution
-     #pragma omp for schedule(dynamic)
+     #pragma omp for schedule(auto)
      for (k=0; k< size; ++k){
          X[k] = Au[index[k]][size] / Au[index[k]][k];
      }
